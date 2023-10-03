@@ -287,7 +287,24 @@ function isCreditCardNumber(/* ccn */) {
  */
 function getDigitalRoot(/* num */) {
   throw new Error('Not implemented');
+  // const str = num.toString();
+  // let sum = 0;
+  // for (let i = 0; i < str.length; i += 1) {
+  //   sum += +str[i];
+  // }
+  // sum = sum.toString();
+  // let res = 0;
+  // for (let i = 0; i < sum.length; i += 1) {
+  //   res += +sum[i];
+  // }
+  // return res;
+  // let res = '';
+  // while (num >= 10) {
+  //   res = num.toString().split('').reduce((sum, digit) => sum + Number(digit), 0);
+  // }
+  // console.log(num);
 }
+// getDigitalRoot(12345);
 
 
 /**
@@ -311,11 +328,29 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  if (str.length === 0) return 'true';
+  const stack = [];
+  const couple = {
+    ')': '(',
+    ']': '[',
+    '}': '{',
+    '>': '<',
+  };
+
+  for (let i = 0; i < str.length; i += 1) {
+    if (str[i] in couple) {
+      if (stack.length === 0 || stack[stack.length - 1] !== couple[str[i]]) {
+        stack.push(str[i]);
+      } else {
+        stack.pop();
+      }
+    } else {
+      stack.push(str[i]);
+    }
+  }
+  return stack.length === 0;
 }
-
-
 /**
  * Returns the string with n-ary (binary, ternary, etc, where n <= 10)
  * representation of specified number.
@@ -336,8 +371,9 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  // throw new Error('Not implemented');
+  return num.toString(n);
 }
 
 
@@ -376,11 +412,23 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const transposeM2 = m2[0].map((col, i) => m2.map((row) => row[i]));
+  const res = [];
+
+  for (let i = 0; i < m1.length; i += 1) {
+    const row = [];
+    for (let j = 0; j < transposeM2.length; j += 1) {
+      let sum = 0;
+      for (let k = 0; k < m1[i].length; k += 1) {
+        sum += m1[i][k] * transposeM2[j][k];
+      }
+      row.push(sum);
+    }
+    res.push(row);
+  }
+  return res;
 }
-
-
 /**
  * Returns the evaluation of the specified tic-tac-toe position.
  * See the details: https://en.wikipedia.org/wiki/Tic-tac-toe
