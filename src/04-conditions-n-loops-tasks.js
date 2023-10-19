@@ -169,8 +169,9 @@ function doRectanglesOverlap(rect1, rect2) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  return (circle.center.x - point.x) ** 2
+    + (circle.center.y - point.y) ** 2 < circle.radius ** 2;
 }
 /**
  * Returns the first non repeated char in the specified strings otherwise returns null.
@@ -405,10 +406,18 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  let res = '';
+  const firstPath = pathes[0].split('/');
+  for (let i = 0; i < firstPath.length; i += 1) {
+    const path = firstPath[i];
+    if (pathes.some((item) => item.split('/')[i] !== path)) {
+      break;
+    }
+    res += `${path}/`;
+  }
+  return res;
 }
-
 /**
  * Returns the product of two specified matrixes.
  * See details: https://en.wikipedia.org/wiki/Matrix_multiplication
@@ -474,10 +483,28 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const updPosition = position.map((row) => {
+    while (row.length < 3) {
+      row.push(undefined);
+    }
+    return row;
+  });
+  const arr = updPosition.flat(1);
+  const match = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [6, 4, 2]];
+  let win = '';
+  for (let i = 0; i < match.length; i += 1) {
+    const matchItems = match[i];
+    const matchItemsNew = matchItems.map((index) => arr[index]);
+    if (matchItemsNew.every((el) => el === 'X')) {
+      win = 'X';
+    } else if (matchItemsNew.every((el) => el === '0')) {
+      win = '0';
+    }
+  }
+  return win || undefined;
 }
-
 
 module.exports = {
   getFizzBuzz,
